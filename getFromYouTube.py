@@ -26,68 +26,81 @@ def checkNaN(value : any) -> int:
     except:
 
         return -88
-    
 
-print("Souhaitez vous telecharger << {} >> sous le format : \n\t1. VIDEO  \n\t2. AUDIO?".format(objet_youtube.title))
+internetConnexion = False   
 
-format = getNumber(1, 2, "\nFormat : ")
+try:
 
-if format == 1:
-    
-    print('Quelle qualite video souhaitez vous telecharger ? \n')
+    print("Souhaitez vous telecharger << {} >> sous le format : \n\t1. VIDEO  \n\t2. AUDIO?".format(objet_youtube.title))
+    internetConnexion = True
 
-    print("\t1. 144p\n\t2. 360p\n\t3. 720p\n\t4. 1080p")
+except:
 
-    quality = getNumber(1, 4, "\nQualite : ")
+    internetConnexion = False
 
-    if quality == 1:
+if internetConnexion:
 
-        tag = 17
+    format = getNumber(1, 2, "\nFormat : ")
 
-    elif quality == 2:
+    if format == 1:
 
-        tag = 18
+        print('Quelle qualite video souhaitez vous telecharger ? \n')
 
-    elif quality == 3:
+        print("\t1. 144p\n\t2. 360p\n\t3. 720p\n\t4. 1080p")
 
-        tag = 22
+        quality = getNumber(1, 4, "\nQualite : ")
+
+        if quality == 1:
+
+            tag = 17
+
+        elif quality == 2:
+
+            tag = 18
+
+        elif quality == 3:
+
+            tag = 22
+
+        else:
+
+            tag = 137
+
+    else : 
+
+        tag = 140
+
+
+    if objet_youtube.age_restricted == True:
+
+        try:
+
+            stream = objet_youtube.streams.get_by_itag(tag)
+
+            print('Telechargement en cours ...')
+
+            stream.download()
+
+            print('Telechargement effectue avec succes')
+
+        except:
+
+            print("Un probleme est survenu lors du telechargement")
 
     else:
 
-        tag = 137
+        try:
 
-else : 
-    
-    tag = 140
-    
+            objet_youtube.streams.filter(adaptive=True, file_extension="mp4").first().download()
 
-if objet_youtube.age_restricted == True:
-    
-    try:
+            print('Telechargement effectue avec succes')
 
-        stream = objet_youtube.streams.get_by_itag(tag)
+        except:
 
-        print('Telechargement en cours ...')
+            print("\nCe contenu youtube poccede certaines restrictions qui empechent son telechargement de cette façon !")
 
-        stream.download()
-
-        print('Telechargement effectue avec succes')
-
-    except:
-
-        print("Un probleme est survenu lors du telechargement")
+            print("Mais vous pouvez vous rendre sur le site https://savefrom.net et entrer l'url de ce contenu youtube pour le telecharger")
 
 else:
 
-    try:
-
-        objet_youtube.streams.filter(adaptive=True, file_extension="mp4").first().download()
-
-        print('Telechargement effectue avec succes')
-        
-    except:
-            
-        print("\nCe contenu youtube poccede certaines restrictions qui empechent son telechargement de cette façon !")
-
-        print("Mais vous pouvez vous rendre sur le site https://savefrom.net et entrer l'url de ce contenu youtube pour le telecharger")
-    
+    print("\nErreur : Veuillez verifier votre connexion internet\n")
