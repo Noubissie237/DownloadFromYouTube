@@ -1,6 +1,6 @@
 from pytube import YouTube
 
-url = "https://www.youtube.com/watch?v=TB5Zq0I79mg"
+url = "https://www.youtube.com/watch?v=Uzj3CD0FUhA"
 
 objet_youtube = YouTube(url)
 
@@ -93,7 +93,7 @@ if internetConnexion:
 
             objet_youtube.streams.filter(adaptive=True, file_extension="mp4").first().download()
 
-            print('Telechargement effectue avec succes')
+            print("Telechargement effectue avec succes, mais pourrai rencontrer certaines perturbations conmme l'abscence de volume ou autre ")
 
         except:
 
